@@ -1,0 +1,79 @@
+1.头部尾部复用？
+2.服务器环境下路径问题？用绝对路径？html，php获取绝对路径的方法
+3.飞机大战改造
+4.局域网聊天室
+5.ajax-跨域资源访问、外部api ajax动态加载图片
+6，面向对象的动画效果--淡入淡出、放大镜
+7.函数是对象吗？JavaScript 中的所有事物都是对象：字符串、数值、数组、函数...此外，JavaScript 允许自定义对象。
+8.jquery查找元素底层实现？
+9.let 局部作用域 作用域？
+10.cookie  path？
+
+
+那个jQuery是全局的jQuery，表示IIFE函数调用时，给它传递jQuery，在函数里边仍然使用$来表示jQuery，也可以不加，现在，加主要是为了避免$命名冲突时的问题。
+
+
+构造函数首字母必须大写？
+
+嗯，规范是大写字母开头，但不大写从规则上来说也没问题，xQuery、jQuery严格来说不是构造函数，是生产对象的工厂函数。
+可以理解为：工厂函数就是一个普通函数，其内部把new构造函数进行了封装，需要显式return新对象，而构造函数在内部默认返回this，一般在外边配合new创建对象。
+
+工具：
+wamp
+svn 使用
+sass less 使用---koala
+
+自动化构建工具
+fis3
+gulp
+grunt
+
+dos linux 操作命令基础
+
+ctrl c  中断
+
+require.js
+require（） 方法中 如果是绝对路径，则要加后缀名
+config（）方法中 paths 对象里面 路径不能加后缀
+
+
+css 阴影问题
+
+Git Bash下支持touch .gitignore
+
+避免全局变量污染
+
+单例设计模式
+
+jquery 事件函数中的event
+
+npm update 不跟版本则更新到最新版本/跟了，则更新到指定版本，如：@3.1  @3.x
+开发的npm registry 管理工具 nrm,  能够查看和切换当前使用的registry
+nrm test
+
+devDependencies 里面的插件只用于开发环境，不用于生产环境
+dependencies 是需要发布到生产环境的。
+
+db 数据库内容
+conf 数据库配置
+dbConf 数据库日志
+
+express koa
+ES6 对象简写
+解构赋值
+
+ES6新增fetch 取代ajax？
+XMLHttpRequest 2？
+formData h5提供的
+exports 暴露出去的是一个对象 该对象里可以包装多个方法 
+
+call apply
+ajax工作流程 原理优缺点
+箭头函数特点
+jsonp原理为什么动态添加script和回调函数
+闭包优缺点 应用
+jq优化
+原型 原型链
+判断是不是数组的方法
+WebSocket 挂在window下面的api
+
