@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>admin</title>
+    <link rel="shortcut icon " type="images/x-icon" href="/imgs/favicon.ico">
+	<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<!-- jQuery 分页插件 CSS文件 -->
+	<link rel="stylesheet" type="text/css" href="/css/pagination.css">
+	<!-- 重置样式 CSS文件 -->
+	<link rel="stylesheet" type="text/css" href="/css/admin.css">
+	<!-- 百度 jQuery CDN -->
+	<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<!-- 模板引擎 -->
+	<script src="/lib/template.js"></script>
+	<!-- jQuery 分页插件 JavaScript文件 -->
+	<script src="/lib/jquery.pagination.js"></script>
+	<!-- jQuery cookie 插件 JavaScript文件 -->
+	<script src="/lib/jquery.cookie.js"></script>
+</head>
+<body>
+	<header>
+		<nav class="navbar navbar-inverse">
+		  	<div class="container">
+		    	<a class="navbar-brand" href="#">拉勾网后台管理系统</a>
+				<ul class="nav navbar-nav">
+        			<li><a href="#">首页</a></li>
+        			<li><a href="#">职位管理</a></li>
+        		</ul>
+        		<ul class="nav navbar-nav" style="float: right;">
+        			<li  id="liLogin"><a href="#">登录</a></li>
+        			<li id="liRegist"><a href="#">注册</a></li>
+        			<li style="display: none;" id="welcome"><a href="#" style="color: #fff;"></a></li>
+        			<li style="display: none;" id="logout"><a href="#" style="color: #fff;">注销</a></li>
+        		</ul>
+		  	</div>
+		  	<!-- 用户登录模态框 -->
+		  	<div class="modal fade" id="exampleModalLogin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+			  	<div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      	<div class="modal-header">
+				        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        	<h4 class="modal-title" id="exampleModalLabel">用户登录</h4>
+				      	</div>
+				      	<div class="modal-body">
+				        <form>
+				          	<div class="form-group">
+				            	<label for="loginUsername" class="control-label">用户名</label>
+				            	<input type="text" class="form-control" id="loginUsername">
+				          	</div>
+				          	<div class="form-group">
+				            	<label for="loginPassword" class="control-label">密码</label>
+				            	<input type="password" class="form-control" id="loginPassword"></input>
+				          	</div>
+				        </form>
+				      	</div>
+				      	<div class="modal-footer">
+				      		<span id="lHelp" style="text-align: left;float: left;"></span>
+				        	<button id="login" type="button" class="btn btn-primary">登录</button>
+				      	</div>
+				    </div>
+			  	</div>
+			</div>
+			<!-- 用户注册模态框 -->
+			<div class="modal fade" id="exampleModalRegister" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+			  	<div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      	<div class="modal-header">
+				        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        	<h4 class="modal-title" id="exampleModalLabel">用户注册</h4>
+				      	</div>
+				      	<div class="modal-body">
+				        <form>
+				          	<div class="form-group">
+				            	<label for="registerUsername" class="control-label">用户名</label>
+				            	<input type="text" class="form-control" id="registerUsername">
+				          	</div>
+				          	<div class="form-group">
+				            	<label for="registerPassword" class="control-label">密码</label>
+				            	<input type="password" class="form-control" id="registerPassword"></input>
+				          	</div>
+				          	<div class="form-group">
+				            	<label for="confirmPassword" class="control-label">确认密码</label>
+				            	<input type="password" class="form-control" id="confirmPassword"></input>
+				          	</div>
+				          	<div class="form-group">
+				            	<label for="email" class="control-label">邮箱</label>
+				            	<input type="email" class="form-control" id="email"></input>
+				          	</div>
+				        </form>
+				      	</div>
+				      	<div class="modal-footer">
+				      		<span id="rHelp" style="text-align: left;float: left;"></span>
+				        	<button type="button" class="btn btn-primary" id="regist">注册</button>
+				      	</div>
+				    </div>
+			  	</div>
+			</div>
+		</nav>
+	</header>
+	<main style="display: none;">
+		<div class="container" style="position: relative;">
+			<div class="row" style="margin-bottom: 10px;">
+				<h2 class="col-md-1" style="font-size: 14px;line-height: 34px;">职位管理</h2>
+				<button type="button" class="btn btn-primary col-md-1 col-md-offset-10" id="addOut">添加</button>
+			</div>
+			<div class="row">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>序号</th>
+							<th>公司logo</th>
+							<th>职位名称</th>
+							<th>公司名称</th>
+							<th>工作经验</th>
+							<th>职位类型</th>
+							<th>工作地点</th>
+							<th>职位薪资</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody id="showAll">
+						<!-- temp 模板引擎 -->
+					</tbody>
+				</table>
+			</div>
+			<div class="row" style="position: absolute;left: 50%;top: 438px; margin-left: -144px;">
+				<div class="m-style M-box11"></div>
+			</div>	
+		</div>
+		<!-- 添加职位模态框 -->
+		<div class="modal fade" id="exampleModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+		  	<div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      	<div class="modal-header">
+			        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        	<h4 class="modal-title" id="exampleModalLabel">职位信息</h4>
+			      	</div>
+			      	<div class="modal-body">
+			        <form>
+			        	<div class="form-group">
+			        		<p style="margin-bottom: 5px;font-weight: bold;">公司logo</p>
+			        		<div class="row">
+			        			<img id="pvwImg" src="/imgs/f12.jpg" class="img-rounded col-md-4" style="width: 50px;height: 50px;padding: 0;margin-left: 20px;">
+			        			<input class="col-md-4" type="file" id="exampleInputFile" style="border: 0;height: 50px;line-height: 20px;">
+			        		</div>
+			        	</div>
+			          	<div class="form-group">
+			            	<label for="inputPositionName" class="control-label">职位名称</label>
+			            	<input type="text" class="form-control" id="inputPositionName" placeholder="输入职位名">
+			          	</div>
+			          	<div class="form-group">
+			            	<label for="inputCompanyName" class="control-label">公司名称</label>
+			            	<input type="text" class="form-control" id="inputCompanyName" placeholder="输入公司名称">
+			          	</div>
+			          	<div class="form-group">
+			            	<label for="inputExp" class="control-label">工作经验</label>
+			            	<input type="text" class="form-control" id="inputExp" placeholder="输入工作经验">
+			          	</div>
+			          	<div class="form-group">
+			            	<label for="inputType" class="control-label">职位类型</label>
+			            	<input type="text" class="form-control" id="inputType" placeholder="输入职位类型">
+			          	</div>
+			          	<div class="form-group">
+			            	<label for="inputAddress" class="control-label">工作地点</label>
+			            	<input type="text" class="form-control" id="inputAddress" placeholder="输入工作地点">
+			          	</div>
+			          	<div class="form-group">
+			            	<label for="inputPay" class="control-label">岗位薪资</label>
+			            	<input type="text" class="form-control" id="inputPay" placeholder="输入岗位薪资">
+			          	</div>
+			        </form>
+			      	</div>
+			      	<div class="modal-footer">
+			      		<span id="addHelp" style="text-align: left;float: left;"></span>
+			        	<button id="add" type="submit" class="btn btn-primary">提交</button>
+			      	</div>
+			    </div>
+		  	</div>
+		</div>
+	</main>
+</body>
+<script>
+		/* **************************添加职位************************* */
+	let $ModalAdd = $("div#exampleModalAdd"), // 添加信息模态框
+		$add = $("button#add",$ModalAdd), // 添加提交按钮
+		$fileImg = $("input#exampleInputFile",$ModalAdd), // 上传图片
+		$pvwImg = $("img#pvwImg",$ModalAdd), // 预览图片
+		$position = $("input#inputPositionName",$ModalAdd), // 职位名称
+		$company = $("input#inputCompanyName",$ModalAdd), // 公司名称
+		$exp = $("input#inputExp",$ModalAdd), // 工作经验
+		$type = $("input#inputType",$ModalAdd), // 职位类型
+		$address = $("input#inputAddress",$ModalAdd), // 工作地点
+		$pay = $("input#inputPay",$ModalAdd), // 岗位薪资
+		$addHelp = $("span#addHelp",$ModalAdd), // 输入错误提示
+		formData = null, 
+		isUpdate = false,
+		$showAll = $("main tbody#showAll"), // 每一条数据行
+		/* **************************用户注册************************* */
+		$ModalRegist = $("div#exampleModalRegister"), // 用户注册模态框
+		$name = $("input#registerUsername",$ModalRegist),
+		$pwd = $("input#registerPassword",$ModalRegist),
+		$confirm = $("input#confirmPassword",$ModalRegist),
+		$email = $("input#email",$ModalRegist),
+		$regist = $("button#regist",$ModalRegist),
+		$rHelp = $("span#rHelp",$ModalRegist),
+		/* **************************用户登录************************* */
+		$ModalLogin = $("div#exampleModalLogin"), // 用户登录模态框
+		$nameLogin = $("input#loginUsername",$ModalLogin),
+		$pwdLogin = $("input#loginPassword",$ModalLogin),
+		$login = $("button#login",$ModalLogin),
+		$lHelp = $("span#lHelp",$ModalLogin);
+
+	// 上传图片并预览
+	$fileImg.on("change",function(e){
+		let	file = this.files[0],
+		 	imgType = file.type,
+			form = new FormData();
+		if(imgType === "image/jpeg" || imgType === "image/png"){
+			$pvwImg.file = file;
+			let reader = new FileReader();
+			reader.onload = function(e){
+				$pvwImg.attr("src",e.target.result);
+			}
+			reader.readAsDataURL(file);
+			form.append("upload",this.files[0]);
+			formData = form;
+		}
+		return false;
+	});
+
+	// 动态加载所有职位信息
+	$.post("/api/findAll",{type : "init"}).done(function(data){
+		if(data.list.length && !data.code){
+			let temp = template("addTemp",data);
+			$showAll.html(temp);
+			// 调用jQuery分页插件
+			fy(data.total);
+		}
+	}).done(function(){
+		clicks();
+	});
+
+	// 从cookie中读取用户信息
+	$.cookie.json = true;
+	let userName = $.cookie("userName");
+	if(userName){
+		$("li#liLogin").hide();
+		$("li#liRegist").hide();
+		$("li#welcome").show().find("a").text("你好，" + userName);
+		$("li#logout").show();
+		$("main").show();
+	}
+
+	// 修改一条职位信息
+	$showAll.on("click",".update",function(e){
+		// 获取当前一条信息
+		let td = $(this).parents("tr").find("td");
+		$position.val(td.eq(2).text().trim());
+		$company.val(td.eq(3).text().trim());
+		$exp.val(td.eq(4).text().trim());
+		$type.val(td.eq(5).text().trim());
+		$address.val(td.eq(6).text().trim());
+		$pay.val(td.eq(7).text().trim());
+
+		// 缓存当前一条信息的数据库_id
+		$add.data("id",$(this).parents("tr").data("id"));
+		// 缓存当前的序号，以便于修改后保持不变
+		$add.data("index",$(this).parents("tr").find("td").eq(0).text().trim());
+		// 缓存当前logo图片的src，以便于修改后从服务端删除原图片
+		$add.data("imgpath",$(this).parents("tr").find("img").attr("src"));
+		// 要提交的是更新操作
+		isUpdate = true;
+
+		$("#exampleModalAdd").modal("show");
+	});
+
+	// 添加一条职位信息
+	$("button#addOut").on("click",function(e){
+		// 初始化输入框
+		$position.val("");
+		$company.val("");
+		$exp.val("");
+		$type.val("");
+		$address.val("");
+		$pay.val("");
+		$add.removeData("id");
+		// 要提交的是添加操作
+		isUpdate = false;
+
+		$("#exampleModalAdd").modal("show");
+	});
+
+	// 提交添加 / 修改操作
+	$add.on("click",function(e){
+		// 获取要添加的信息
+		let params = {
+			position : $position.val().trim(),
+			company : $company.val().trim(),
+			exp : $exp.val().trim(),
+			type : $type.val().trim(),
+			address : $address.val().trim(),
+			pay : $pay.val().trim(),
+			page : Number($(".active").text().trim())  // 获取当前的页码 
+		};
+		
+		if(!params.position || !params.company || !params.exp
+			|| !params.type || !params.address || !params.pay){
+			$addHelp.text("** 不能为空哦！**")
+					.css("color","#f00")
+					.show()
+					.fadeOut(2000);
+			return;
+		} else if(!formData){
+			$addHelp.text("** 还没有选择图片哦！**")
+					.css("color","#f00")
+					.show()
+					.fadeOut(2000);
+			return;
+		} else {
+			// 上传图片
+			$.ajax({
+				url : "/api/upload",
+				data : formData,
+				contentType : false,
+				processData : false,
+				dataType : "json",
+				type : "POST"
+			}).done(function(data){
+				// 设置图片的src
+				if(!data.code){
+					$pvwImg.attr("src",data.img);
+					params.img = data.img;
+				}
+			}).done(() => {
+				// 提交添加操作
+				if(!isUpdate){
+					$.post("/api/addPosition",params).done(function(data){
+						if(!data.code){
+							// 查询数据渲染页面
+							$.post("/api/findAll",{
+								index : params.page,
+								type : "add"
+							}).done(function(data){
+								let temp = template("addTemp",data);
+								$showAll.html(temp);
+								// $ModalAdd.hide();
+								// $("div.modal-backdrop").hide();
+								// 隐藏模态框
+								$("#exampleModalAdd").modal("hide");
+								fy(data.total,data.index);
+							}).done(function() {
+								clicks();
+							});
+						}
+					});
+				} else {
+					params._id = $(this).data("id");
+					params.oldImg = $(this).data("imgpath"); 
+					let _index = $(this).data("index");
+					// 查找到当前修改的那条信息				
+					let rep = $(`#showAll tr[data-id=${params._id}]`);
+
+					// 提交更新操作
+					$.post("/api/update",params,function(data){
+						let temp = template("addTemp",data);
+						rep.replaceWith(temp);
+						$(`#showAll tr[data-id=${params._id}]`).find("td")
+															   .eq(0)
+															   .text(_index);
+						// $ModalAdd.hide();
+						// $("div.modal-backdrop").hide();
+						// 隐藏模态框
+						$("#exampleModalAdd").modal("hide");
+					});
+				}
+			});
+		}
+		return false;
+	});
+
+	// 删除一条信息
+	$showAll.on("click",".del",function(e){
+		let _id = $(this).parents("tr").data("id"),
+			page = Number($(".active").text().trim()),
+			imgPath =  $(this).parents("tr")
+							  .find("img")
+							  .attr("src");
+		$.post("/api/delete",{_id,imgPath}).done(function(data){
+			if(!data.code){
+				$.post("/api/findAll",{
+					index : page,
+					type : "del"
+				}).done(function(data){
+					if(data.index <= 0) data.index = 1;
+					let temp = template("addTemp",data);
+					$showAll.html(temp);
+					fy(data.total,data.index);
+				}).done(function(){
+					clicks();
+				});
+			}
+		});
+		return false;
+	});
+	$("#liLogin").click(function(e){
+		$("#exampleModalLogin").modal("show");
+		return false;
+	});
+	$("#liRegist").click(function(e){
+		$("#exampleModalRegister").modal("show");
+		return false;
+	});
+	// 用户注册
+	$regist.on("click",function(e){
+		let params = {
+			name : $name.val().trim(),
+			pwd : $pwd.val().trim(),
+			confirm : $confirm.val().trim(),
+			email : $email.val().trim()
+		};
+		if(!params.name || !params.pwd || !params.confirm || !params.email){
+			$rHelp.text("** 不能为空哦！**")
+				  .css("color","#f00")
+				  .show()
+				  .fadeOut(2000);
+			return;
+		} else if(params.pwd !== params.confirm){
+			$rHelp.text("** 前后密码不一致哦！**")
+				  .css("color","#f00")
+				  .show()
+				  .fadeOut(2000);
+			return;
+		} else {
+			$.post("/api/registUser",params,function(data){
+				if(!data.code){
+					$("li#liLogin").hide();
+					$("li#liRegist").hide();
+					$("li#welcome").show()
+								   .find("a")
+								   .text("你好，" + params.name);
+					$("li#logout").show();
+					// $ModalRegist.hide();
+					// $("div.modal-backdrop").hide();
+					$("#exampleModalRegister").modal("hide");
+					$("main").show();
+					$.cookie("userName",params.name,{
+						expires : 7 ,
+						path : "/"
+					});
+				}
+			})
+		}
+		return false;
+	});
+
+	// 用户注销
+	$("li#logout").on("click",function(){
+		$.removeCookie("userName",{path : "/"});
+		$("li#liLogin").show();
+		$("li#liRegist").show();
+		$("li#welcome").hide();
+		$("li#logout").hide();
+		$("main").hide();
+		return false;
+	});
+
+	// 用户登录
+	$login.on("click",function(e){
+		let params = {
+			name : $nameLogin.val().trim(),
+			pwd : $pwdLogin.val().trim()
+		};
+		if(!params.name || !params.pwd){
+			$lHelp.text("** 不能为空哦！**")
+				  .css("color","#f00")
+				  .show()
+				  .fadeOut(2000);
+			return;
+		} else {
+			$.post("/api/login",params,function(data){
+				if(data.code){
+					$lHelp.text(data.msg)
+						  .css("color","#f00")
+						  .show()
+						  .fadeOut(2000);
+					return;
+				} else {
+					$("li#liLogin").hide();
+					$("li#liRegist").hide();
+					$("li#welcome").show()
+								   .find("a")
+								   .text("你好，" + params.name);
+					$("li#logout").show();
+					// $ModalLogin.hide();
+					// $("div.modal-backdrop").hide();
+					// 隐藏模态框
+					$("#exampleModalLogin").modal("hide");
+					$("main").show();
+					$.cookie("userName",params.name,{
+						expires : 7,
+						path : "/"
+					});
+				}
+			});
+		}
+		return false;
+	});
+
+	// 生成页码
+	function fy(total,curr = 1) {
+		$('.M-box11').pagination({
+	    	totalData: total,
+		    showData: 5,
+		    coping: true,
+		    current : curr
+		}); 
+	}
+	
+	// 点击翻页
+	function clicks() {
+		// 点击翻页
+		$(".M-box11").on("click","a",function(e){
+			let _current = Number($(this).text().trim());
+			pages(_current);
+			return false;
+		});
+		// 左翻页
+		$(".M-box11").on("click",".prev",function(e){
+			let _current = Number($(".active").text().trim());
+			pages(_current);
+			return false;
+		});
+		// 右翻页
+		$(".M-box11").on("click",".next",function(e){
+			let _current = Number($(".active").text().trim());
+			pages(_current);
+			return false;
+		});
+	}
+
+	// 提交翻页
+	function pages (_current) {
+		$.post("/api/page",{current : _current},function(data){
+			let temp = template("addTemp",data);
+			$showAll.html(temp);
+		});
+	}
+
+</script>
+<script type="text/html" id="addTemp">
+	{{each list as value i}}
+	<tr data-id="{{value._id}}">
+		<td>{{i + 1 + (index - 1) * 5}}</td>
+		<td><img style="width: 50px;height: 50px;" src="{{value.img}}"></td>
+		<td>{{value.position}}</td>
+		<td>{{value.company}}</td>
+		<td>{{value.exp}}</td>
+		<td>{{value.type}}</td>
+		<td>{{value.address}}</td>
+		<td>{{value.pay}}</td>
+		<td><a class="update" href="#" style="margin-right: 15px;">修改</a><a href="#" class="del">删除</a></td>
+	</tr>
+	{{/each}}
+</script>
+</html>

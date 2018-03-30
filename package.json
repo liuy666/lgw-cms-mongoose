@@ -1,0 +1,28 @@
+{
+  "name": "lgw_cms",
+  "version": "1.0.0",
+  "description": "lgw",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liuy666/lgw_cms.git"
+  },
+  "keywords": [
+    "lgw"
+  ],
+  "author": "liuy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/liuy666/lgw_cms/issues"
+  },
+  "homepage": "https://github.com/liuy666/lgw_cms#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "formidable": "^1.2.1",
+    "mongoose": "^5.0.11"
+  }
+}
